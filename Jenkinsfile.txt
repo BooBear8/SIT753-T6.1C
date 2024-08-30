@@ -4,86 +4,70 @@ agent any
 stages {
 stage('Build') {
 steps {
-script {
 echo 'Building the application...'
-// Placeholder for the build command, e.g., sh 'mvn clean install'
+// Example for Java: sh 'mvn clean install'
 echo 'Build completed using Maven.'
-}
 }
 }
 
 stage('Unit and Integration Tests') {
 steps {
-script {
 echo 'Running unit and integration tests...'
-// Placeholder for the test command, e.g., sh 'mvn test'
+// Example for Java: sh 'mvn test'
 echo 'Tests completed using JUnit.'
-}
 }
 }
 
 stage('Code Analysis') {
 steps {
-script {
 echo 'Performing code analysis...'
-// Placeholder for the code analysis command, e.g., sh 'sonar-scanner'
+// Example: sh 'sonar-scanner'
 echo 'Code analysis completed using SonarQube.'
-}
 }
 }
 
 stage('Security Scan') {
 steps {
-script {
 echo 'Performing security scan...'
-// Placeholder for the security scan command, e.g., sh 'dependency-check.sh'
+// Example: sh 'dependency-check.sh'
 echo 'Security scan completed using OWASP Dependency-Check.'
-}
 }
 }
 
 stage('Deploy to Staging') {
 steps {
-script {
 echo 'Deploying to Staging...'
-// Placeholder for the deployment command, e.g., sh 'scp target/myapp.war user@staging-server:/path/to/deploy/'
+// Example: sh 'scp target/myapp.war user@staging-server:/path/to/deploy/'
 echo 'Deployment to Staging completed.'
-}
 }
 }
 
 stage('Integration Tests on Staging') {
 steps {
-script {
 echo 'Running integration tests on Staging...'
-// Placeholder for the integration tests on staging, e.g., sh 'mvn verify -Pstaging'
+// Example: sh 'mvn verify -Pstaging'
 echo 'Staging integration tests completed.'
-}
 }
 }
 
 stage('Deploy to Production') {
 steps {
-script {
 echo 'Deploying to Production...'
-// Placeholder for the deployment to production, e.g., sh 'scp target/myapp.war user@production-server:/path/to/deploy/'
+// Example: sh 'scp target/myapp.war user@production-server:/path/to/deploy/'
 echo 'Deployment to Production completed.'
-}
 }
 }
 }
 
 post {
 always {
-script {
 echo 'Sending email notifications...'
 emailext (
 subject: "Jenkins Pipeline: ${currentBuild.fullDisplayName}",
 body: "Pipeline completed with status: ${currentBuild.currentResult}",
-to: 'henry.and.ruth@gmail.com',
+to: 'saikumarch83@gmail.com',
 attachLog: true
 )
-}
 }
 }
 }
