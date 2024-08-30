@@ -1,73 +1,65 @@
 pipeline {
-agent any
+    agent any
 
-stages {
-stage('Build') {
-steps {
-echo 'Building the application...'
-// Example for Java: sh 'mvn clean install'
-echo 'Build completed using Maven.'
-}
-}
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building the application l Mavgn'
+            }
+        }
 
-stage('Unit and Integration Tests') {
-steps {
-echo 'Running unit and integration tests...'
-// Example for Java: sh 'mvn test'
-echo 'Tests completed using JUnit.'
-}
-}
+        stage('Unit and Integration Tests') {
+            steps {
+                echo 'Running unit and integration tests l JUnit'
 
-stage('Code Analysis') {
-steps {
-echo 'Performing code analysis...'
-// Example: sh 'sonar-scanner'
-echo 'Code analysis completed using SonarQube.'
-}
-}
+                script {
+                    def testResult = currentBuild.result ?: 'SUCCESS'
+                    def emailBody = "Unit and Integration Test Results:\n\nBuild Result: ${testResult}\n\n"
+                    emailext body: emailBody,
+                            subject: "Test Stage Status: ${testResult}",
+                            to: 'henry.and.ruth@gmail.com',
+                            attachLog: true
+                }
+            }
+        }
 
-stage('Security Scan') {
-steps {
-echo 'Performing security scan...'
-// Example: sh 'dependency-check.sh'
-echo 'Security scan completed using OWASP Dependency-Check.'
-}
-}
+        stage('Code Analysis') {
+            steps {
+                echo 'Performing code analysis l SonarQube'
+            }
+        }
 
-stage('Deploy to Staging') {
-steps {
-echo 'Deploying to Staging...'
-// Example: sh 'scp target/myapp.war user@staging-server:/path/to/deploy/'
-echo 'Deployment to Staging completed.'
-}
-}
+        stage('Security Scan') {
+            steps {
+                echo 'Performing security scan l Snyk'
 
-stage('Integration Tests on Staging') {
-steps {
-echo 'Running integration tests on Staging...'
-// Example: sh 'mvn verify -Pstaging'
-echo 'Staging integration tests completed.'
-}
-}
+                script {
+                    def securityScanResult = currentBuild.result ?: 'SUCCESS'
+                    def emailBody = "Security Scan Results:\n\nBuild Result: ${securityScanResult}\n\n"
+                    emailext body: emailBody,
+                            subject: "Security Scan Status: ${securityScanResult}",
+                            to: 'henry.and.ruth@gmail.com',
+                            attachLog: true 
+                }
+            }
+        }
 
-stage('Deploy to Production') {
-steps {
-echo 'Deploying to Production...'
-// Example: sh 'scp target/myapp.war user@production-server:/path/to/deploy/'
-echo 'Deployment to Production completed.'
-}
-}
-}
+        stage('Deploy to Staging') {
+            steps {
+                echo 'Deploying to Staging l WAR'
+            }
+        }
 
-post {
-always {
-echo 'Sending email notifications...'
-emailext (
-subject: "Jenkins Pipeline: ${currentBuild.fullDisplayName}",
-body: "Pipeline completed with status: ${currentBuild.currentResult}",
-to: 'henry.and.ruth@gmail.com',
-attachLog: true
-)
-}
-}
+        stage('Integration Tests on Staging') {
+            steps {
+                echo 'Running integration tests on Staging l PStaging'
+            }
+        }
+
+        stage('Deploy to Production') {
+            steps {
+                echo 'Deploying to Production...'
+            }
+        }
+    }
 }
