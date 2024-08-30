@@ -24,7 +24,7 @@ pipeline {
                 echo 'Performing security scan l Nessus'
                 emailext body: 'Security Scan Results',
                     subject: 'Test Stage Status',
-                    to: 'ruth.chou01@gmail.com'
+                    to: 'henry.and.ruth@gmail.com'
             }
         }
         stage('Deploy to Staging') {
