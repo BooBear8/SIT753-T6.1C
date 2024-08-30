@@ -11,8 +11,7 @@ pipeline {
                 echo 'Running unit and integration tests l Selenium'
                 emailext body: 'Unit and Integration Test Results',
                     subject: 'Test Stage Status',
-                    to: 'henry.and.ruth@gmail.com',
-                    attachLog: true
+                    to: 'henry.and.ruth@gmail.com'
             }
         }
         stage('Code Analysis') {
@@ -25,8 +24,7 @@ pipeline {
                 echo 'Performing security scan l Nessus'
                 emailext body: 'Security Scan Results',
                     subject: 'Test Stage Status',
-                    to: 'ruth.chou01@gmail.com',
-                    attachLog: true
+                    to: 'ruth.chou01@gmail.com'
             }
         }
         stage('Deploy to Staging') {
