@@ -27,27 +27,11 @@ pipeline {
             steps {
                 echo 'Conducting security scan...'
                 echo 'Tool: OWASP ZAP, Nessus, or similar security scanning tool'
-
-                script {
-                    // Capture security scan results (assuming they are written to a file)
-                    def scanResults = readFile 'security_scan_results.txt' 
-                    def scanStatus = currentBuild.currentResult ?: 'SUCCESS' // Default to SUCCESS if not set
-
-                    emailext (
-                        subject: "Security Scan Report - ${scanStatus}",
-                        body: """
-                            Security Scan completed on ${env.JOB_NAME} build #${env.BUILD_NUMBER}.
-                            Status: ${scanStatus}
-
-                            Scan Results:
-                            ${scanResults}
-
-                            Please review the attached logs for more details.
-                        """,
-                        to: 'henry.and.ruth@gmail.com',
-                        attachmentsPattern: 'security_scan_logs.txt' 
-                    )
-                }
+                // Add script to send email notification with security scan results
+                emailext body: 'Security Scan Stage completed. See attached logs.', 
+                    subject: 'Security Scan Status', 
+                    to: 'henry.and.ruth@gmail.com',
+                    attachmentsPattern: 'security_scan_logs.txt' 
             }
         }
 
@@ -62,27 +46,11 @@ pipeline {
             steps {
                 echo 'Running integration tests on staging...'
                 echo 'Tools: Same as Unit and Integration Tests stage'
-
-                script {
-                    // Capture integration test results (assuming they are written to a file)
-                    def testResults = readFile 'staging_integration_test_results.txt'
-                    def testStatus = currentBuild.currentResult ?: 'SUCCESS' 
-
-                    emailext (
-                        subject: "Integration Tests on Staging Report - ${testStatus}",
-                        body: """
-                            Integration Tests on Staging completed on ${env.JOB_NAME} build #${env.BUILD_NUMBER}.
-                            Status: ${testStatus}
-
-                            Test Results:
-                            ${testResults}
-
-                            Please review the attached logs for more details.
-                        """,
-                        to: 'henry.and.ruth@gmail.com',
-                        attachmentsPattern: 'staging_integration_test_logs.txt' 
-                    )
-                }
+                // Add script to send email notification with integration test results on staging
+                emailext body: 'Integration Tests on Staging completed. See attached logs.', 
+                    subject: 'Integration Tests on Staging Status', 
+                    to: 'henry.and.ruth@gmail.com',
+                    attachmentsPattern: 'staging_integration_test_logs.txt' 
             }
         }
 
