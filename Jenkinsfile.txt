@@ -66,24 +66,14 @@ pipeline {
     }
     post {
         always { 
-            //emailext body: '''
-            //    ${SCRIPT, template="groovy-html.template"}
-            //    <pre>
-            //        ${buildLog, maxLines=500, escapeHtml=false}  // Use buildLog variable here
-            //    </pre>
-            //''',
-            //subject: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - ${currentBuild.currentResult}",
-            //to: 'henry.and.ruth@gmail.com'
-	    //mail to: 'henry.and.ruth@gmail.com',
-            //subject: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - ${currentBuild.currentResult}",
-            //body: "This is a test email from Jenkins." 
-		def buildLog = manager.build.getLog() // Get the build log content
-            println "Build Log: ${buildLog}" 
+            script {
+                def buildLog = manager.build.getLog() 
+                println "Build Log: ${buildLog}" 
 
-            // Send the email using the 'mail' step
-            mail to: 'henry.and.ruth@gmail.com',
-                subject: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - ${currentBuild.currentResult}",
-                body: "Build Log:\n\n${buildLog}"
+                mail to: 'henry.and.ruth@gmail.com',
+                    subject: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - ${currentBuild.currentResult}",
+                    body: "Build Log:\n\n${buildLog}"
+            }
         }
     }
 }
