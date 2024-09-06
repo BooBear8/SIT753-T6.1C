@@ -5,33 +5,33 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building the application...'
-                echo 'Tool: Maven, Gradle, or similar build automation tool' 
+                echo 'Tool: Maven or similar build automation tool' 
             }
         }
 
         stage('Unit and Integration Tests') {
             steps {
                 echo 'Running unit and integration tests...'
-                echo 'Tools: JUnit, Mockito, Selenium, or similar testing frameworks'
+                echo 'Tools: Selenium or similar testing frameworks'
             }
         }
 
         stage('Code Analysis') {
             steps {
                 echo 'Performing code analysis...'
-                echo 'Tool: SonarQube, Checkstyle, PMD, or similar code analysis tool'
+                echo 'Tool: SonarQube or similar code analysis tool'
             }
         }
 
         stage('Security Scan') {
             steps {
                 echo 'Conducting security scan...'
-                echo 'Tool: OWASP ZAP, Nessus, or similar security scanning tool'
+                echo 'Tool: OWASP ZAP or similar security scanning tool'
             }
             post {
                 success {
                     mail to: 'henry.and.ruth@gmail.com',
-                        subject: 'build status email',
+                        subject: 'build status: successful',
                         body: 'successful'
                 }
             }
@@ -40,7 +40,7 @@ pipeline {
         stage('Deploy to Staging') {
             steps {
                 echo 'Deploying to staging server...'
-                echo 'Tool: Ansible, Chef, Puppet, or similar deployment automation tool'
+                echo 'Tool: Puppet or similar deployment automation tool'
             }
         }
 
@@ -52,7 +52,7 @@ pipeline {
             post {
                 success {
                     mail to: 'henry.and.ruth@gmail.com',
-                        subject: 'integration tests on staging status email',
+                        subject: 'integration tests on staging status: successful',
                         body: 'successful'
                 }
             }
@@ -61,7 +61,7 @@ pipeline {
         stage('Deploy to Production') {
             steps {
                 echo 'Deploying to production server...'
-                echo 'Tool: Same as Deploy to Staging stage'
+                echo 'Tool: Puppet or similar deployment automation tool'
             }
         }
     }
