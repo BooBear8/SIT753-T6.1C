@@ -19,7 +19,8 @@ pipeline {
         stage('Code Analysis') {
             steps {
                 echo 'Performing code analysis...'
-                echo 'Tool: SonarQube or similar code analysis tool'
+                // Assuming SonarQube generates an HTML report in the 'reports' directory
+                sh 'sonar-scanner -Dsonar.projectKey=myproject -Dsonar.sources=. -Dsonar.host.url=http://your-sonarqube-server -Dsonar.login=your-token'
             }
         }
 
@@ -27,6 +28,8 @@ pipeline {
             steps {
                 echo 'Conducting security scan...'
                 echo 'Tool: OWASP ZAP or similar security scanning tool'
+                // Assuming OWASP ZAP generates a report in the 'zap_reports' directory
+                sh 'zap-cli quick-scan --self-contained --spider http://your-app-url --report-html zap_reports/zap-report.html'
             }
             post {
                 success {
@@ -34,8 +37,6 @@ pipeline {
                         subject: 'Security Scan: Successful',
                         body: 'The security scan has completed successfully.'
                 }
-                // Consider adding a 'failure' condition to send an email 
-                // if the security scan fails 
             }
         }
 
@@ -57,7 +58,6 @@ pipeline {
                         subject: 'Integration Tests on Staging: Successful',
                         body: 'The integration tests on staging have completed successfully.'
                 }
-                // Consider adding a 'failure' condition here as well
             }
         }
 
@@ -77,7 +77,8 @@ pipeline {
                 </pre>
             ''',
             subject: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - ${currentBuild.currentResult}",
-            to: 'henry.and.ruth@gmail.com'
+            to: 'henry.and.ruth@gmail.com',
+            attachmentsPattern: '**/reports/sonar-report.html, **/zap_reports/zap-report.html' // Attach SonarQube and ZAP reports
         }
     }
 }
