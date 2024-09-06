@@ -74,9 +74,13 @@ pipeline {
             //''',
             //subject: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - ${currentBuild.currentResult}",
             //to: 'henry.and.ruth@gmail.com'
-	    mail to: 'henry.and.ruth@gmail.com',
-            subject: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - ${currentBuild.currentResult}",
-            body: "This is a test email from Jenkins." 
+	    //mail to: 'henry.and.ruth@gmail.com',
+            //subject: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - ${currentBuild.currentResult}",
+            //body: "This is a test email from Jenkins." 
+		def buildLog = manager.build.getLog()
+            mail to: 'henry.and.ruth@gmail.com',
+                subject: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - ${currentBuild.currentResult}",
+                body: "Build Log:\n\n${buildLog}"
         }
     }
 }
