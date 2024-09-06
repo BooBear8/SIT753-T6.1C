@@ -1,64 +1,63 @@
 pipeline {
-    agent any
+    agent any 
 
     stages {
         stage('Build') {
             steps {
-                echo 'Building the application l Mavgn'
+                echo 'Building the application...'
+                echo 'Tool: Maven, Gradle, or similar build automation tool' 
             }
         }
 
         stage('Unit and Integration Tests') {
             steps {
-                echo 'Running unit and integration tests l JUnit'
-
-                script {
-                    def testResult = currentBuild.result ?: 'SUCCESS'
-                    def emailBody = "Unit and Integration Test Results:\n\nBuild Result: ${testResult}\n\n"
-                    emailext body: emailBody,
-                            subject: "Test Stage Status: ${testResult}",
-                            to: 'henry.and.ruth@gmail.com',
-                            attachLog: true
-                }
+                echo 'Running unit and integration tests...'
+                echo 'Tools: JUnit, Mockito, Selenium, or similar testing frameworks'
             }
         }
 
         stage('Code Analysis') {
             steps {
-                echo 'Performing code analysis l SonarQube'
+                echo 'Performing code analysis...'
+                echo 'Tool: SonarQube, Checkstyle, PMD, or similar code analysis tool'
             }
         }
 
         stage('Security Scan') {
             steps {
-                echo 'Performing security scan l Snyk'
-
-                script {
-                    def securityScanResult = currentBuild.result ?: 'SUCCESS'
-                    def emailBody = "Security Scan Results:\n\nBuild Result: ${securityScanResult}\n\n"
-                    emailext body: emailBody,
-                            subject: "Security Scan Status: ${securityScanResult}",
-                            to: 'henry.and.ruth@gmail.com',
-                            attachLog: true 
-                }
+                echo 'Conducting security scan...'
+                echo 'Tool: OWASP ZAP, Nessus, or similar security scanning tool'
+                // Add script to send email notification with security scan results
+                emailext body: 'Security Scan Stage completed. See attached logs.', 
+                    subject: 'Security Scan Status', 
+                    to: 'henry.and.ruth@gmail.com',
+                    attachmentsPattern: 'security_scan_logs.txt' 
             }
         }
 
         stage('Deploy to Staging') {
             steps {
-                echo 'Deploying to Staging l WAR'
+                echo 'Deploying to staging server...'
+                echo 'Tool: Ansible, Chef, Puppet, or similar deployment automation tool'
             }
         }
 
         stage('Integration Tests on Staging') {
             steps {
-                echo 'Running integration tests on Staging l PStaging'
+                echo 'Running integration tests on staging...'
+                echo 'Tools: Same as Unit and Integration Tests stage'
+                // Add script to send email notification with integration test results on staging
+                emailext body: 'Integration Tests on Staging completed. See attached logs.', 
+                    subject: 'Integration Tests on Staging Status', 
+                    to: 'henry.and.ruth@gmail.com',
+                    attachmentsPattern: 'staging_integration_test_logs.txt' 
             }
         }
 
         stage('Deploy to Production') {
             steps {
-                echo 'Deploying to Production...'
+                echo 'Deploying to production server...'
+                echo 'Tool: Same as Deploy to Staging stage'
             }
         }
     }
