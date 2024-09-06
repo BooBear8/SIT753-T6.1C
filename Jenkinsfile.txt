@@ -66,9 +66,6 @@ pipeline {
     }
     post {
         always { 
-            def buildLog = manager.build.getLog() // Get the build log content
-            println "Build Log: ${buildLog}" 
-
             emailext body: '''
                 ${SCRIPT, template="groovy-html.template"}
                 <pre>
