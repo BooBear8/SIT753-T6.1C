@@ -12,7 +12,7 @@ pipeline {
         stage('Unit and Integration Tests') {
             steps {
                 echo 'Running unit and integration tests...'
-                echo 'Tools: Selenium or similar testing frameworks'
+                echo 'Tools: JUnit, Mockito, Selenium, or similar testing frameworks' 
             }
         }
 
@@ -31,16 +31,18 @@ pipeline {
             post {
                 success {
                     mail to: 'henry.and.ruth@gmail.com',
-                        subject: 'build status: successful',
-                        body: 'successful'
+                        subject: 'Security Scan: Successful',
+                        body: 'The security scan has completed successfully.'
                 }
+                // Consider adding a 'failure' condition to send an email 
+                // if the security scan fails 
             }
         }
 
         stage('Deploy to Staging') {
             steps {
                 echo 'Deploying to staging server...'
-                echo 'Tool: Puppet or similar deployment automation tool'
+                echo 'Tool: Ansible, Jenkins Deploy Plugin, or similar deployment automation tool'
             }
         }
 
@@ -48,23 +50,25 @@ pipeline {
             steps {
                 echo 'Running integration tests on staging...'
                 echo 'Tools: Same as Unit and Integration Tests stage'
-            }    
+            } 
             post {
                 success {
                     mail to: 'henry.and.ruth@gmail.com',
-                        subject: 'integration tests on staging status: successful',
-                        body: 'successful'
+                        subject: 'Integration Tests on Staging: Successful',
+                        body: 'The integration tests on staging have completed successfully.'
                 }
+                // Consider adding a 'failure' condition here as well
             }
         }
 
         stage('Deploy to Production') {
             steps {
                 echo 'Deploying to production server...'
-                echo 'Tool: Puppet or similar deployment automation tool'
+                echo 'Tool: Ansible, Jenkins Deploy Plugin, or similar deployment automation tool' 
             }
         }
-	post {
+    }
+    post {
         always { 
             emailext body: '''
                 ${SCRIPT, template="groovy-html.template"}
@@ -75,6 +79,5 @@ pipeline {
             subject: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - ${currentBuild.currentResult}",
             to: 'henry.and.ruth@gmail.com'
         }
-    }
     }
 }
