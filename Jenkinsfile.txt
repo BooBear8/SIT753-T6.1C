@@ -60,21 +60,23 @@ pipeline {
         stage('Deploy to Production') {
             steps {
                 echo 'Deploying to production server...'
-                echo 'Tool: Ansible, Jenkins Deploy Plugin, or similar deployment automation tool' 
+                echo 'Tool: Ansible or similar deployment automation tool' 
             }
         }
     }
     post {
-        always { 
-            emailext body: '''
-                ${SCRIPT, template="groovy-html.template"}
-                <pre>
-                    ${BUILD_LOG, maxLines=500, escapeHtml=false} 
-                </pre>
-            ''',
-            subject: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - ${currentBuild.currentResult}",
-            to: 'henry.and.ruth@gmail.com',
-            attachmentsPattern: '**/reports/sonar-report.html, **/zap_reports/zap-report.html' // Attach SonarQube and ZAP reports
-        }
+    always { 
+        println "Build Log: ${BUILD_LOG}" // Print the build log to the console
+
+        emailext body: '''
+            ${SCRIPT, template="groovy-html.template"}
+            <pre>
+                ${BUILD_LOG, maxLines=500, escapeHtml=false} 
+            </pre>
+        ''',
+        subject: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - ${currentBuild.currentResult}",
+        to: 'henry.and.ruth@gmail.com'
+        // attachmentsPattern: '**/reports/sonar-report.html, **/zap_reports/zap-report.html'  // Removed for now
     }
+}
 }
