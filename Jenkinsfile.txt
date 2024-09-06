@@ -64,5 +64,17 @@ pipeline {
                 echo 'Tool: Puppet or similar deployment automation tool'
             }
         }
+	post {
+        always { 
+            emailext body: '''
+                ${SCRIPT, template="groovy-html.template"}
+                <pre>
+                    ${BUILD_LOG, maxLines=500, escapeHtml=false} 
+                </pre>
+            ''',
+            subject: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - ${currentBuild.currentResult}",
+            to: 'henry.and.ruth@gmail.com'
+        }
+    }
     }
 }
