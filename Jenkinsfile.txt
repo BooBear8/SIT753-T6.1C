@@ -46,11 +46,26 @@ pipeline {
             steps {
                 echo 'Running integration tests on staging...'
                 echo 'Tools: Same as Unit and Integration Tests stage'
-                // Add script to send email notification with integration test results on staging
-                emailext body: 'Integration Tests on Staging completed. See attached logs.', 
-                    subject: 'Integration Tests on Staging Status', 
-                    to: 'henry.and.ruth@gmail.com',
-                    attachmentsPattern: 'staging_integration_test_logs.txt' 
+                script {
+                    // Capture integration test results (assuming they are written to a file)
+                    def testResults = readFile 'staging_integration_test_results.txt'
+                    def testStatus = currentBuild.currentResult ?: 'SUCCESS' 
+
+                    emailext (
+                        subject: "Integration Tests on Staging Report - ${testStatus}",
+                        body: """
+                            Integration Tests on Staging completed on ${env.JOB_NAME} build #${env.BUILD_NUMBER}.
+                            Status: ${testStatus}
+
+                            Test Results:
+                            ${testResults}
+
+                            Please review the attached logs for more details.
+                        """,
+                        to: 'your-email@example.com',
+                        attachmentsPattern: 'staging_integration_test_logs.txt' 
+                    )
+                }
             }
         }
 
