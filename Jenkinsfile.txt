@@ -67,7 +67,7 @@ pipeline {
     post {
         always { 
             script {
-                def buildLog = manager.build.getLog() 
+               def buildLog = currentBuild.rawBuild.getLog() // Get the build log content
                 println "Build Log: ${buildLog}" 
 
                 mail to: 'henry.and.ruth@gmail.com',
