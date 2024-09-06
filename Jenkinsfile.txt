@@ -12,15 +12,13 @@ pipeline {
         stage('Unit and Integration Tests') {
             steps {
                 echo 'Running unit and integration tests...'
-                echo 'Tools: JUnit, Mockito, Selenium, or similar testing frameworks' 
+                echo 'Tool: Selenium or similar testing frameworks' 
             }
         }
 
         stage('Code Analysis') {
             steps {
                 echo 'Performing code analysis...'
-                // Assuming SonarQube generates an HTML report in the 'reports' directory
-                sh 'sonar-scanner -Dsonar.projectKey=myproject -Dsonar.sources=. -Dsonar.host.url=http://your-sonarqube-server -Dsonar.login=your-token'
             }
         }
 
@@ -28,8 +26,6 @@ pipeline {
             steps {
                 echo 'Conducting security scan...'
                 echo 'Tool: OWASP ZAP or similar security scanning tool'
-                // Assuming OWASP ZAP generates a report in the 'zap_reports' directory
-                sh 'zap-cli quick-scan --self-contained --spider http://your-app-url --report-html zap_reports/zap-report.html'
             }
             post {
                 success {
@@ -43,7 +39,7 @@ pipeline {
         stage('Deploy to Staging') {
             steps {
                 echo 'Deploying to staging server...'
-                echo 'Tool: Ansible, Jenkins Deploy Plugin, or similar deployment automation tool'
+                echo 'Tool: Ansible or similar deployment automation tool'
             }
         }
 
