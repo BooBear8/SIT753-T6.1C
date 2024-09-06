@@ -1,5 +1,5 @@
 pipeline {
-    agent any 
+    agent any
 
     stages {
         stage('Build') {
@@ -47,7 +47,7 @@ pipeline {
             steps {
                 echo 'Running integration tests on staging...'
                 echo 'Tools: Same as Unit and Integration Tests stage'
-            } 
+            }
             post {
                 success {
                     mail to: 'henry.and.ruth@gmail.com',
@@ -65,19 +65,18 @@ pipeline {
         }
     }
     post {
-    always { 
-        def buildLog = manager.build.getLog() // Get the build log content
-        println "Build Log: ${buildLog}" 
+        always { 
+            def buildLog = manager.build.getLog() // Get the build log content
+            println "Build Log: ${buildLog}" 
 
-        emailext body: '''
-            ${SCRIPT, template="groovy-html.template"}
-            <pre>
-                ${buildLog, maxLines=500, escapeHtml=false}  // Use buildLog variable here
-            </pre>
-        ''',
-        subject: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - ${currentBuild.currentResult}",
-        to: 'henry.and.ruth@gmail.com'
+            emailext body: '''
+                ${SCRIPT, template="groovy-html.template"}
+                <pre>
+                    ${buildLog, maxLines=500, escapeHtml=false}  // Use buildLog variable here
+                </pre>
+            ''',
+            subject: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - ${currentBuild.currentResult}",
+            to: 'henry.and.ruth@gmail.com'
+        }
     }
-}
-}
 }
