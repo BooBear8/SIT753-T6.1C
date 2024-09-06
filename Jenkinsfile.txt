@@ -44,7 +44,7 @@ pipeline {
 
                             Please review the attached logs for more details.
                         """,
-                        to: 'your-email@example.com',
+                        to: 'henry.and.ruth@gmail.com',
                         attachmentsPattern: 'security_scan_logs.txt' 
                     )
                 }
@@ -79,7 +79,7 @@ pipeline {
 
                             Please review the attached logs for more details.
                         """,
-                        to: 'your-email@example.com',
+                        to: 'henry.and.ruth@gmail.com',
                         attachmentsPattern: 'staging_integration_test_logs.txt' 
                     )
                 }
