@@ -27,19 +27,14 @@ pipeline {
             steps {
                 echo 'Conducting security scan...'
                 echo 'Tool: OWASP ZAP, Nessus, or similar security scanning tool'
-                // Add script to send email notification with security scan results
-                //emailext body: 'Security Scan Stage completed. See attached logs.', 
-                   // subject: 'Security Scan Status', 
-                   // to: 'henry.and.ruth@gmail.com',
-                   // attachmentsPattern: 'security_scan_logs.txt' 
             }
-	    post{
-		success{
-			mail to: 'henry.and.ruth@gmail.com'
-			subject: 'build status email'
-			body:    'successful'
-			}
-		}
+            post {
+                success {
+                    mail to: 'henry.and.ruth@gmail.com',
+                        subject: 'build status email',
+                        body: 'successful'
+                }
+            }
         }
 
         stage('Deploy to Staging') {
@@ -53,6 +48,7 @@ pipeline {
             steps {
                 echo 'Running integration tests on staging...'
                 echo 'Tools: Same as Unit and Integration Tests stage'
+                
                 // Add script to send email notification with integration test results on staging
                 emailext body: 'Integration Tests on Staging completed. See attached logs.', 
                     subject: 'Integration Tests on Staging Status', 
