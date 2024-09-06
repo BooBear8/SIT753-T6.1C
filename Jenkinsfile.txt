@@ -27,11 +27,27 @@ pipeline {
             steps {
                 echo 'Conducting security scan...'
                 echo 'Tool: OWASP ZAP, Nessus, or similar security scanning tool'
-                // Add script to send email notification with security scan results
-                emailext body: 'Security Scan Stage completed. See attached logs.', 
-                    subject: 'Security Scan Status', 
-                    to: 'henry.and.ruth@gmail.com',
-                    attachmentsPattern: 'security_scan_logs.txt' 
+
+                script {
+                    // Capture security scan results (assuming they are written to a file)
+                    def scanResults = readFile 'security_scan_results.txt' 
+                    def scanStatus = currentBuild.currentResult ?: 'SUCCESS' // Default to SUCCESS if not set
+
+                    emailext (
+                        subject: "Security Scan Report - ${scanStatus}",
+                        body: """
+                            Security Scan completed on ${env.JOB_NAME} build #${env.BUILD_NUMBER}.
+                            Status: ${scanStatus}
+
+                            Scan Results:
+                            ${scanResults}
+
+                            Please review the attached logs for more details.
+                        """,
+                        to: 'your-email@example.com',
+                        attachmentsPattern: 'security_scan_logs.txt' 
+                    )
+                }
             }
         }
 
@@ -46,6 +62,7 @@ pipeline {
             steps {
                 echo 'Running integration tests on staging...'
                 echo 'Tools: Same as Unit and Integration Tests stage'
+
                 script {
                     // Capture integration test results (assuming they are written to a file)
                     def testResults = readFile 'staging_integration_test_results.txt'
